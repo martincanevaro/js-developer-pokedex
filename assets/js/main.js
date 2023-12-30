@@ -22,13 +22,19 @@ function convertPokemonToLi(pokemon) {
         </li>
     `
 }
-
-function loadPokemonItens(offset, limit) {
-    pokeApi.getPokemons(offset, limit).then((pokemons = []) => {
-        const newHtml = pokemons.map(convertPokemonToLi).join('')
-        pokemonList.innerHTML += newHtml
-    })
+function showLoadingIndicator() {
+  const loadingIndicator = document.createElement('div')
+  loadingIndicator.classList.add('loading-indicator')
+  loadingIndicator.textContent = 'Cargando...'
+  pokemonList.appendChild(loadingIndicator)
 }
+function loadPokemonItems(offset, limit) {
+  showLoadingIndicator()
+  pokeApi.getPokemons(offset, limit).then((pokemons = []) => {
+    const newHtml = pokemons.map(convertPokemonToLi).join('')
+    pokemonList.innerHTML += newHtml
+    loadingIndicator.remove()
+  })
 
 loadPokemonItens(offset, limit)
 
